@@ -1,0 +1,13 @@
+node_modules
+dist
+coverage
+apps/api/.venv
+apps/api/uv.lock
+apps/api/src
+apps/api/tests
+contracts/emotional-analysis.schema.json
+contracts/openapi.json
+apps/web/src/shared/contracts/generated.ts
+docs/product/definicion-mvp.md
+docs/presentation
+LICENSE

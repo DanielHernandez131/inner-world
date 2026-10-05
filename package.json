@@ -1,0 +1,30 @@
+{
+  "name": "inner-world",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0 <25",
+    "npm": ">=11"
+  },
+  "workspaces": [
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @inner-world/web",
+    "dev:api": "uv run --project apps/api uvicorn inner_world.main:app --reload --reload-dir apps/api/src --host 127.0.0.1 --port 8000",
+    "build": "npm run build --workspace @inner-world/web",
+    "lint": "npm run lint --workspace @inner-world/web",
+    "typecheck": "npm run typecheck --workspace @inner-world/web",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "api:check": "uv run --project apps/api ruff check apps/api scripts/export_contracts.py && uv run --project apps/api ruff format --check apps/api scripts/export_contracts.py && uv run --project apps/api pytest apps/api/tests",
+    "contracts:generate": "uv run --project apps/api python scripts/export_contracts.py && node scripts/generate_types.mjs",
+    "check": "npm run lint && npm run typecheck && npm run build && npm run api:check && npm run format:check"
+  },
+  "devDependencies": {
+    "json-schema-to-typescript": "^15.0.4",
+    "prettier": "^3.6.2"
+  }
+}

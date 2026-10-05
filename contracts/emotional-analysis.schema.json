@@ -1,0 +1,200 @@
+{
+  "$defs": {
+    "CharacterVoice": {
+      "additionalProperties": false,
+      "properties": {
+        "emotion": {
+          "$ref": "#/$defs/Emotion"
+        },
+        "text": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "emotion",
+        "text"
+      ],
+      "title": "CharacterVoice",
+      "type": "object"
+    },
+    "Emotion": {
+      "enum": [
+        "joy",
+        "trust",
+        "fear",
+        "surprise",
+        "sadness",
+        "disgust",
+        "anger",
+        "anticipation"
+      ],
+      "title": "Emotion",
+      "type": "string"
+    },
+    "EmotionReading": {
+      "additionalProperties": false,
+      "properties": {
+        "emotion": {
+          "$ref": "#/$defs/Emotion"
+        },
+        "intensity": {
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Intensity",
+          "type": "integer"
+        },
+        "explanation": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "emotion",
+        "intensity",
+        "explanation",
+        "evidence"
+      ],
+      "title": "EmotionReading",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "source_message_id": {
+          "format": "uuid",
+          "title": "Source Message Id",
+          "type": "string"
+        },
+        "quote": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_message_id",
+        "quote"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "FragmentCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "thought",
+            "discovery",
+            "possibility"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "provenance": {
+          "enum": [
+            "user_quote",
+            "user_paraphrase",
+            "ai_hypothesis"
+          ],
+          "title": "Provenance",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "source_message_ids": {
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Source Message Ids",
+          "type": "array"
+        },
+        "related_emotions": {
+          "items": {
+            "$ref": "#/$defs/Emotion"
+          },
+          "maxItems": 8,
+          "title": "Related Emotions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "provenance",
+        "text",
+        "source_message_ids",
+        "related_emotions"
+      ],
+      "title": "FragmentCandidate",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "summary": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    },
+    "emotions": {
+      "items": {
+        "$ref": "#/$defs/EmotionReading"
+      },
+      "maxItems": 8,
+      "title": "Emotions",
+      "type": "array"
+    },
+    "characters": {
+      "items": {
+        "$ref": "#/$defs/CharacterVoice"
+      },
+      "maxItems": 8,
+      "title": "Characters",
+      "type": "array"
+    },
+    "fragments": {
+      "items": {
+        "$ref": "#/$defs/FragmentCandidate"
+      },
+      "maxItems": 4,
+      "title": "Fragments",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "summary",
+    "emotions",
+    "characters",
+    "fragments"
+  ],
+  "title": "EmotionalAnalysis",
+  "type": "object"
+}

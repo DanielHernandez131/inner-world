@@ -1,0 +1,21 @@
+name: Propuesta
+description: Propón una funcionalidad o mejora del proyecto.
+title: '[Propuesta]: '
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema o necesidad
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Resultado propuesto
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceptación
+      description: Indica cómo comprobaríamos que funciona.

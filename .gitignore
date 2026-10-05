@@ -1,0 +1,24 @@
+# Dependencies and generated local files
+node_modules/
+dist/
+coverage/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.mypy_cache/
+.DS_Store
+.idea/
+
+# Credentials and personal emotional records
+.env
+.env.*
+!.env.example
+!**/.env.example
+local-data/
+*.local
+*.log
+
+# Keep package-lock.json, uv.lock and generated contracts in version control.

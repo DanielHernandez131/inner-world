@@ -1,0 +1,113 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Inner World API",
+    "description": "Base de desarrollo. La integración con IA todavía no está implementada.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Health",
+        "operationId": "health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/emotions": {
+      "get": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Emotion Catalog",
+        "operationId": "emotion_catalog_api_v1_emotions_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/EmotionCatalogEntry"
+                  },
+                  "type": "array",
+                  "title": "Response Emotion Catalog Api V1 Emotions Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Emotion": {
+        "type": "string",
+        "enum": [
+          "joy",
+          "trust",
+          "fear",
+          "surprise",
+          "sadness",
+          "disgust",
+          "anger",
+          "anticipation"
+        ],
+        "title": "Emotion"
+      },
+      "EmotionCatalogEntry": {
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Emotion"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label"
+        ],
+        "title": "EmotionCatalogEntry"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok",
+            "title": "Status",
+            "default": "ok"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version",
+            "default": "0.1.0"
+          },
+          "ai_enabled": {
+            "type": "boolean",
+            "title": "Ai Enabled",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "HealthResponse"
+      }
+    }
+  }
+}

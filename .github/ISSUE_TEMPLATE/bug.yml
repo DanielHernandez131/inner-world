@@ -1,0 +1,22 @@
+name: Error
+description: Comunica un comportamiento inesperado con datos ficticios.
+title: '[Bug]: '
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Comportamiento observado y esperado
+      description: No incluyas relatos personales ni secretos.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Pasos para reproducir
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Entorno
+      placeholder: Sistema, navegador, versión de Node/Python y commit.
