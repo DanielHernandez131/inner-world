@@ -18,7 +18,7 @@ Las semanas son relativas al inicio efectivo del desarrollo. La base del reposit
 - [x] Modelos de análisis, ejemplo y tipos generados.
 - [x] Pruebas y configuración de CI.
 - [x] Repositorio público con la base inicial.
-- [ ] Comprobar la primera ejecución remota de Actions.
+- [x] Primera ejecución remota de Actions completada correctamente.
 - [ ] Configurar protección de `main` y reporte privado de vulnerabilidades.
 
 ## Backlog P0

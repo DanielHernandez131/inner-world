@@ -1,5 +1,7 @@
 # Inner World
 
+[![CI](https://github.com/DanielHernandez131/inner-world/actions/workflows/ci.yml/badge.svg)](https://github.com/DanielHernandez131/inner-world/actions/workflows/ci.yml)
+
 **Tus experiencias. Un mundo por comprender.**
 
 Inner World es un proyecto open source de exploración emocional gamificada mediante inteligencia artificial. Su propuesta es convertir experiencias cotidianas en perspectivas, personajes emocionales y huellas de un mundo visual que el usuario pueda revisar y conservar.
@@ -20,15 +22,15 @@ Consulta la [definición completa del MVP](docs/product/definicion-mvp.md) o el 
 
 ## Qué funciona hoy
 
-| Disponible                                                        | Estado                                            |
-| ----------------------------------------------------------------- | ------------------------------------------------- |
-| Interfaz inicial en español y vistas vacías de Espejo e Historial | Ejecutable                                        |
-| Ocho regiones visuales y ubicaciones futuras                      | Vista previa estática                             |
-| API de salud y catálogo de emociones                              | Implementada                                      |
-| Contrato de análisis emocional, esquema JSON y tipos TypeScript   | Generados y validados                             |
-| Pruebas de API y validación de contratos                          | Ejecutables                                       |
-| CI, formateo y configuración de Dependabot                        | Incluidos; ejecución remota pendiente de publicar |
-| Conversación con LLM, guardado y evolución del mundo              | Pendientes                                        |
+| Disponible                                                        | Estado                                                                                                      |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Interfaz inicial en español y vistas vacías de Espejo e Historial | Ejecutable                                                                                                  |
+| Ocho regiones visuales y ubicaciones futuras                      | Vista previa estática                                                                                       |
+| API de salud y catálogo de emociones                              | Implementada                                                                                                |
+| Contrato de análisis emocional, esquema JSON y tipos TypeScript   | Generados y validados                                                                                       |
+| Pruebas de API y validación de contratos                          | Ejecutables                                                                                                 |
+| CI, formateo y configuración de Dependabot                        | Configurados; [ver ejecuciones](https://github.com/DanielHernandez131/inner-world/actions/workflows/ci.yml) |
+| Conversación con LLM, guardado y evolución del mundo              | Pendientes                                                                                                  |
 
 Los textos de personajes del ejemplo son ficticios. La aplicación inicial no envía relatos ni realiza llamadas a un proveedor de IA. No necesita ninguna clave.
 
