@@ -25,7 +25,7 @@
     "test:web": "npm run test --workspace @inner-world/web"
   },
   "devDependencies": {
-    "json-schema-to-typescript": "^15.0.4",
+    "json-schema-to-typescript": "^16.0.0",
     "prettier": "^3.6.2"
   }
 }
