@@ -1,0 +1,108 @@
+{
+  "$defs": {
+    "ClarificationQuestion": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 2,
+          "title": "Options",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "options"
+      ],
+      "title": "ClarificationQuestion",
+      "type": "object"
+    },
+    "ExplorationAnswer": {
+      "additionalProperties": false,
+      "properties": {
+        "question": {
+          "$ref": "#/$defs/ClarificationQuestion"
+        },
+        "message": {
+          "$ref": "#/$defs/SourceMessage"
+        }
+      },
+      "required": [
+        "question",
+        "message"
+      ],
+      "title": "ExplorationAnswer",
+      "type": "object"
+    },
+    "SourceMessage": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "text"
+      ],
+      "title": "SourceMessage",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "experience_id": {
+      "format": "uuid",
+      "title": "Experience Id",
+      "type": "string"
+    },
+    "story": {
+      "$ref": "#/$defs/SourceMessage"
+    },
+    "answers": {
+      "items": {
+        "$ref": "#/$defs/ExplorationAnswer"
+      },
+      "maxItems": 2,
+      "title": "Answers",
+      "type": "array"
+    },
+    "finish_now": {
+      "default": false,
+      "title": "Finish Now",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "experience_id",
+    "story",
+    "answers"
+  ],
+  "title": "ExplorationRequest",
+  "type": "object"
+}

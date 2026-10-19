@@ -1,11 +1,20 @@
-"""Only foundation endpoints are live; exploration is specified in docs."""
+"""Local health, emotion catalog and stateless exploration endpoints."""
 
 from typing import Literal
+from uuid import uuid4
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from pydantic import BaseModel
 
-from inner_world.schemas import Emotion
+from inner_world.adventures import personalize
+from inner_world.exploration import analyze
+from inner_world.schemas import (
+    AdventureRequest,
+    AdventureResponse,
+    Emotion,
+    ExplorationRequest,
+    ExplorationResponse,
+)
 
 router = APIRouter(prefix="/api/v1")
 
@@ -22,8 +31,8 @@ class EmotionCatalogEntry(BaseModel):
 
 
 @router.get("/health", response_model=HealthResponse, tags=["system"])
-def health() -> HealthResponse:
-    return HealthResponse()
+def health(request: Request) -> HealthResponse:
+    return HealthResponse(ai_enabled=request.app.state.settings.ai_enabled)
 
 
 @router.get("/emotions", response_model=list[EmotionCatalogEntry], tags=["catalog"])
@@ -42,3 +51,16 @@ def emotion_catalog() -> list[EmotionCatalogEntry]:
         EmotionCatalogEntry(id=emotion, label=label)
         for emotion, label in zip(Emotion, labels, strict=True)
     ]
+
+
+@router.post("/explorations/analyze", response_model=ExplorationResponse, tags=["exploration"])
+def explore(payload: ExplorationRequest, request: Request) -> ExplorationResponse:
+    request.app.state.budget.consume()
+    turn = analyze(payload, request.app.state.provider)
+    return ExplorationResponse(result=turn.result, request_id=uuid4())
+
+
+@router.post("/adventures/personalize", response_model=AdventureResponse, tags=["adventure"])
+def adventure(payload: AdventureRequest, request: Request) -> AdventureResponse:
+    request.app.state.budget.consume()
+    return personalize(payload, request.app.state.adventure_provider)

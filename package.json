@@ -21,7 +21,8 @@
     "format:check": "prettier --check .",
     "api:check": "uv run --project apps/api ruff check apps/api scripts/export_contracts.py && uv run --project apps/api ruff format --check apps/api scripts/export_contracts.py && uv run --project apps/api pytest apps/api/tests",
     "contracts:generate": "uv run --project apps/api python scripts/export_contracts.py && node scripts/generate_types.mjs",
-    "check": "npm run lint && npm run typecheck && npm run build && npm run api:check && npm run format:check"
+    "check": "npm run lint && npm run typecheck && npm run build && npm run test:web && npm run api:check && npm run format:check",
+    "test:web": "npm run test --workspace @inner-world/web"
   },
   "devDependencies": {
     "json-schema-to-typescript": "^15.0.4",

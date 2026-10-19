@@ -1,0 +1,116 @@
+{
+  "$defs": {
+    "AdventurePersonalization": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "introduction": {
+          "maxLength": 600,
+          "minLength": 1,
+          "title": "Introduction",
+          "type": "string"
+        },
+        "clearing_detail": {
+          "maxLength": 220,
+          "minLength": 1,
+          "title": "Clearing Detail",
+          "type": "string"
+        },
+        "shelter_detail": {
+          "maxLength": 220,
+          "minLength": 1,
+          "title": "Shelter Detail",
+          "type": "string"
+        },
+        "arrival_detail": {
+          "maxLength": 220,
+          "minLength": 1,
+          "title": "Arrival Detail",
+          "type": "string"
+        },
+        "reflection_question": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Reflection Question",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "introduction",
+        "clearing_detail",
+        "shelter_detail",
+        "arrival_detail",
+        "reflection_question"
+      ],
+      "title": "AdventurePersonalization",
+      "type": "object"
+    },
+    "TokenUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "input_tokens": {
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "input_tokens",
+        "output_tokens"
+      ],
+      "title": "TokenUsage",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "request_id": {
+      "format": "uuid",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "experience_id": {
+      "format": "uuid",
+      "title": "Experience Id",
+      "type": "string"
+    },
+    "template_id": {
+      "const": "crossing-v1",
+      "title": "Template Id",
+      "type": "string"
+    },
+    "personalization": {
+      "$ref": "#/$defs/AdventurePersonalization"
+    },
+    "usage": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TokenUsage"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "request_id",
+    "experience_id",
+    "template_id",
+    "personalization",
+    "usage"
+  ],
+  "title": "AdventureResponse",
+  "type": "object"
+}

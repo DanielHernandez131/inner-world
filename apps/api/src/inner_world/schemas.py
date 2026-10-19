@@ -1,7 +1,7 @@
 """Source of truth for the initial, versioned emotional-analysis contract.
 
 Structural validation is implemented here. Evidence must also be checked against
-the source transcript by the future exploration service before any result is saved.
+the source transcript by the exploration service before returning a result.
 """
 
 from enum import StrEnum
@@ -83,3 +83,103 @@ class EmotionalAnalysis(ContractModel):
         if any(not set(f.related_emotions).issubset(emotion_ids) for f in self.fragments):
             raise ValueError("Fragment emotions must refer to identified emotions")
         return self
+
+
+class SourceMessage(ContractModel):
+    id: UUID
+    text: Annotated[str, Field(min_length=1, max_length=4000)]
+
+
+class ClarificationQuestion(ContractModel):
+    id: UUID
+    text: ShortText
+    options: Annotated[list[ShortText], Field(min_length=2, max_length=5)]
+
+    @model_validator(mode="after")
+    def unique_options(self) -> "ClarificationQuestion":
+        if len(set(self.options)) != len(self.options):
+            raise ValueError("Options must be unique")
+        return self
+
+
+class ExplorationAnswer(ContractModel):
+    question: ClarificationQuestion
+    message: SourceMessage
+
+
+class ExplorationRequest(ContractModel):
+    experience_id: UUID
+    story: SourceMessage
+    answers: Annotated[list[ExplorationAnswer], Field(max_length=2)]
+    finish_now: bool = False
+
+    @model_validator(mode="after")
+    def check_transcript(self) -> "ExplorationRequest":
+        if len(self.story.text) < 20:
+            raise ValueError("Story must contain at least 20 characters")
+        ids = [self.story.id]
+        for answer in self.answers:
+            if len(answer.message.text) > 2000:
+                raise ValueError("Answer is too long")
+            ids.extend([answer.question.id, answer.message.id])
+        if len(set(ids)) != len(ids):
+            raise ValueError("Transcript IDs must be unique")
+        return self
+
+
+class ClarificationResult(ContractModel):
+    status: Literal["clarification"]
+    question: ClarificationQuestion
+
+
+class CompleteResult(ContractModel):
+    status: Literal["complete"]
+    analysis: EmotionalAnalysis
+
+
+class InsufficientResult(ContractModel):
+    status: Literal["insufficient_context"]
+    explanation: ShortText
+
+
+class ExplorationTurn(ContractModel):
+    result: ClarificationResult | CompleteResult | InsufficientResult
+
+
+class ExplorationResponse(ExplorationTurn):
+    request_id: UUID
+
+
+class TokenUsage(ContractModel):
+    input_tokens: Annotated[int, Field(ge=0, strict=True)]
+    output_tokens: Annotated[int, Field(ge=0, strict=True)]
+
+
+class AdventureRequest(ContractModel):
+    experience_id: UUID
+    template_id: Literal["crossing-v1"]
+    summary: ShortText
+    emotions: Annotated[list[Emotion], Field(min_length=1, max_length=8)]
+
+    @model_validator(mode="after")
+    def unique_emotions(self) -> "AdventureRequest":
+        if len(set(self.emotions)) != len(self.emotions):
+            raise ValueError("Adventure emotions must be unique")
+        return self
+
+
+class AdventurePersonalization(ContractModel):
+    title: Annotated[str, Field(min_length=1, max_length=80)]
+    introduction: Annotated[str, Field(min_length=1, max_length=600)]
+    clearing_detail: Annotated[str, Field(min_length=1, max_length=220)]
+    shelter_detail: Annotated[str, Field(min_length=1, max_length=220)]
+    arrival_detail: Annotated[str, Field(min_length=1, max_length=220)]
+    reflection_question: Annotated[str, Field(min_length=1, max_length=200)]
+
+
+class AdventureResponse(ContractModel):
+    request_id: UUID
+    experience_id: UUID
+    template_id: Literal["crossing-v1"]
+    personalization: AdventurePersonalization
+    usage: TokenUsage | None

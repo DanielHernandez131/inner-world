@@ -35,6 +35,6 @@ jobs:
       - name: Verify generated contracts
         run: |
           npm run contracts:generate
-          git diff --exit-code -- contracts apps/web/src/shared/contracts/generated.ts
+          git diff --exit-code -- contracts apps/web/src/shared/contracts
       - name: Validate frontend and backend
         run: npm run check

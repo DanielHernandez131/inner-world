@@ -6,7 +6,7 @@
 
 Inner World es un proyecto open source de exploración emocional gamificada mediante inteligencia artificial. Su propuesta es convertir experiencias cotidianas en perspectivas, personajes emocionales y huellas de un mundo visual que el usuario pueda revisar y conservar.
 
-**Estado: base de desarrollo, previa al MVP.** La versión actual incluye un frontend inicial, una API ejecutable y contratos de datos. La exploración con IA, el mundo persistente y el Espejo funcional todavía están pendientes.
+**Estado: primera fase de exploración y aventura híbrida, previa al MVP completo.** Incluye relatos, preguntas con botones, revisión, guardado local, mapa SVG y una aventura breve con personalización inicial. El adaptador de OpenAI está implementado; necesita clave y modelo de servidor. La calidad con un proveedor real sigue pendiente de evaluación.
 
 ## La experiencia que queremos construir
 
@@ -16,23 +16,23 @@ Inner World es un proyecto open source de exploración emocional gamificada medi
 4. Decide qué guardar y observa sus huellas en el mapa.
 5. Vuelve sobre tus fragmentos en el Espejo y en el historial.
 
-El modelo conceptual utiliza ocho familias inspiradas en Plutchik. Todas pueden contribuir al mundo; no hay emociones que resten puntos o destruyan el escenario. La primera versión será en español y sin cuentas. Dungeon y Alchemist quedan como expansiones futuras.
+El modelo conceptual utiliza ocho familias inspiradas en Plutchik. Todas pueden contribuir al mundo; no hay emociones que resten puntos o destruyan el escenario. La primera versión será en español y sin cuentas. Dungeon y Alchemist quedan como expansiones futuras. La aventura híbrida inicial es un recorrido breve separado, sin combate ni puntuaciones.
 
 Consulta la [definición completa del MVP](docs/product/definicion-mvp.md) o el [documento de presentación en PDF](docs/presentation/Inner_World_Definicion_MVP.pdf).
 
 ## Qué funciona hoy
 
-| Disponible                                                        | Estado                                                                                                      |
-| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Interfaz inicial en español y vistas vacías de Espejo e Historial | Ejecutable                                                                                                  |
-| Ocho regiones visuales y ubicaciones futuras                      | Vista previa estática                                                                                       |
-| API de salud y catálogo de emociones                              | Implementada                                                                                                |
-| Contrato de análisis emocional, esquema JSON y tipos TypeScript   | Generados y validados                                                                                       |
-| Pruebas de API y validación de contratos                          | Ejecutables                                                                                                 |
-| CI, formateo y configuración de Dependabot                        | Configurados; [ver ejecuciones](https://github.com/DanielHernandez131/inner-world/actions/workflows/ci.yml) |
-| Conversación con LLM, guardado y evolución del mundo              | Pendientes                                                                                                  |
+| Disponible                                                      | Estado                                                                                                      |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Exploración, revisión, Espejo e Historial en español            | Ejecutables                                                                                                 |
+| Ocho regiones SVG con huellas de experiencias confirmadas       | Proyección local reconstruible                                                                              |
+| API de salud, catálogo, exploración y personalización           | Implementada                                                                                                |
+| Contrato de análisis emocional, esquema JSON y tipos TypeScript | Generados y validados                                                                                       |
+| Pruebas de API y validación de contratos                        | Ejecutables                                                                                                 |
+| CI, formateo y configuración de Dependabot                      | Configurados; [ver ejecuciones](https://github.com/DanielHernandez131/inner-world/actions/workflows/ci.yml) |
+| Adaptador LLM, preguntas y guardado IndexedDB                   | Implementados; llamada real pendiente de configuración y evaluación                                         |
 
-Los textos de personajes del ejemplo son ficticios. La aplicación inicial no envía relatos ni realiza llamadas a un proveedor de IA. No necesita ninguna clave.
+Los ejemplos y las pruebas usan relatos ficticios. Al comenzar una exploración, y tras aceptar el aviso en pantalla, el relato y las aclaraciones se envían a OpenAI a través del backend. Sin configuración se muestra un error de disponibilidad; no se simula una interpretación.
 
 ## Desarrollo local
 
@@ -59,9 +59,27 @@ npm run dev:api
 - API: <http://127.0.0.1:8000/api/v1/health>
 - Documentación interactiva: <http://127.0.0.1:8000/docs>
 
-Vite redirige `/api` al backend durante el desarrollo. El frontend actual es una vista estática y no depende de que la API esté levantada.
+Vite redirige `/api` al backend durante el desarrollo. El mapa y los registros locales pueden consultarse sin IA; analizar una experiencia requiere la API y el proveedor configurado.
 
-La configuración por defecto sirve para el inicio local. Si necesitas personalizar CORS, copia `apps/api/.env.example` a `apps/api/.env`. En Windows puedes usar `Copy-Item`; en macOS/Linux, `cp`. No añadas secretos al frontend ni a Git.
+Para habilitar la IA, copia `apps/api/.env.example` a `apps/api/.env`. En Windows puedes usar `Copy-Item`; en macOS/Linux, `cp`. Configura `INNER_WORLD_OPENAI_API_KEY` y `INNER_WORLD_OPENAI_MODEL` con un modelo de tu cuenta compatible con Responses y Structured Outputs. Reinicia el backend tras cambiar estas variables. No añadas secretos al frontend ni a Git.
+
+El flujo admite hasta dos preguntas, opciones por botones y respuestas libres. Puedes terminar antes, ajustar intensidades o retirar emociones antes de confirmar. Solo la confirmación modifica el mapa. IndexedDB conserva el borrador, el resultado original y el revisado; el historial permite eliminar una experiencia con sus huellas y fragmentos. Borrar los datos del navegador elimina estos registros.
+
+El backend no persiste ni registra relatos. El adaptador usa `store: false`; esto no equivale a retención cero: OpenAI puede conservar registros de seguridad hasta 30 días según los controles de la cuenta. Consulta [sus controles de datos](https://developers.openai.com/api/docs/guides/your-data). El contexto enviado incluye relato, preguntas previas y respuestas; no se envía el historial de otras experiencias. Las claves permanecen en el servidor. Las pruebas automáticas sustituyen el proveedor y no demuestran calidad emocional, calidad narrativa ni una llamada real.
+
+## Aventura híbrida inicial
+
+Después de confirmar una experiencia, abre **Aventura**, selecciona su origen y acepta el envío del resumen y las emociones. El backend hace **una llamada adicional** a OpenAI para personalizar título, introducción, tres detalles de escena y una pregunta final. No reenvía el relato original, las aclaraciones, los fragmentos ni el historial. El resumen puede contener información personal: revisa su contenido antes de aceptar el envío.
+
+El bosque, el claro, el refugio, el puente y la torre tienen textos, acciones e ilustración SVG preparados. Las ramificaciones y la reflexión final funcionan localmente, con un máximo de cuatro decisiones. Se conserva una aventura por experiencia, con su plantilla versionada y su recorrido. Retomarla o recargar utiliza lo guardado, sin regenerar. La reflexión no modifica el análisis, los fragmentos ni el mapa: las elecciones ficticias no se convierten en hechos sobre la persona.
+
+`POST /api/v1/adventures/personalize` comparte clave, modelo y límite global con la exploración. La salida de personalización se limita por defecto a 1200 tokens con `INNER_WORLD_ADVENTURE_MAX_OUTPUT_TOKENS` (500–2000). No hay reparación automática: un fallo no dispara una segunda llamada. El consumo de entrada/salida que informe el proveedor se muestra en la aventura guardada; no es todavía un contador global ni un límite monetario.
+
+Si falla el guardado después de generar, la interfaz conserva el resultado en memoria y permite reintentar **solo el guardado**. No cierres esa pestaña hasta guardarlo. Si falla la conexión después del envío, un reintento manual puede generar otra llamada facturable: no hay una caché de resultados ni deduplicación entre procesos en el servidor. La persistencia y reutilización son locales a cada navegador. La API no es un servicio público con cuotas por usuario.
+
+La clave recomendada sigue siendo una service account exclusiva del proyecto, por ejemplo `inner-world-dev`, con permiso de creación de Responses (`api.responses.write`). La aventura no necesita permisos de archivos, herramientas, imágenes o administración. Configura los límites de gasto del proyecto en el proveedor por separado. El ejemplo `.env.example` propone 3 operaciones/minuto y 30/día para empezar las pruebas.
+
+Los límites locales por proceso son 12 operaciones/minuto y 200/día, con hasta dos llamadas por operación si hay reparación de formato o evidencias. Son configurables y se reinician con el proceso; no sustituyen cuotas del proveedor ni controles de un servicio público.
 
 ## Comprobaciones
 
@@ -96,7 +114,7 @@ Incluye los cambios generados en el commit. CI vuelve a generarlos y comprueba q
 | `docs/`      | Producto, arquitectura, especificación inicial, backlog y presentación. |
 | `.github/`   | CI, Dependabot y plantillas de colaboración.                            |
 
-La API no utiliza base de datos en esta etapa. La persistencia del MVP será local, detrás de una interfaz de repositorio. El proveedor LLM se elegirá e integrará después, mediante un adaptador del backend.
+La API es stateless y no utiliza base de datos. El cliente guarda borradores y experiencias en IndexedDB mediante un repositorio. El mundo se deriva de los registros confirmados; los fragmentos conservan su experiencia y los mensajes de origen. Quedan pendientes validación individual de fragmentos, migraciones y evaluación de la integración con IA real.
 
 ## Documentación
 

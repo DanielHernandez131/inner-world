@@ -239,3 +239,222 @@ footer {
     scroll-behavior: auto !important;
   }
 }
+
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+a {
+  color: #d5c3fa;
+}
+.exploration {
+  max-width: 760px;
+  margin: 48px auto;
+  line-height: 1.7;
+}
+.exploration h1 {
+  font-size: clamp(28px, 4vw, 42px);
+}
+.exploration form {
+  margin: 24px 0;
+}
+label {
+  display: block;
+  margin: 12px 0;
+}
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 130px;
+  resize: vertical;
+  padding: 16px;
+  border: 1px solid #73819b;
+  border-radius: 12px;
+  background: #202a3a;
+  color: #f2f3f7;
+  font: inherit;
+  line-height: 1.6;
+}
+textarea:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 3px solid #d5c3fa;
+  outline-offset: 3px;
+}
+input[type='checkbox'] {
+  margin-right: 10px;
+}
+input[type='range'] {
+  display: block;
+  width: 100%;
+  accent-color: #cbb8f2;
+}
+.exploration button:not(.primary-action),
+.region-selector button,
+.history-entry button {
+  border: 1px solid #79839a;
+  border-radius: 10px;
+  padding: 12px 16px;
+  background: #253043;
+  color: #f2f3f7;
+  margin: 5px;
+  text-align: left;
+}
+.answer-options {
+  display: grid;
+  gap: 8px;
+}
+blockquote {
+  border-left: 2px solid #c7b6ef;
+  padding-left: 16px;
+  margin-left: 0;
+  color: #c7cfdf;
+}
+.emotion-review,
+.history-entry {
+  padding: 20px;
+  border: 1px solid #ffffff26;
+  border-radius: 14px;
+  margin: 20px 0;
+}
+.world-map {
+  border: 1px solid #ffffff22;
+  border-radius: 24px;
+  padding: 24px;
+  background: #1b2433;
+}
+.map-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.map-heading > span {
+  font-size: 13px;
+  color: #bbc6d8;
+}
+.world-map svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 12px 0 20px;
+}
+.region-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.region-selector button[aria-pressed='true'] {
+  background: #cbb8f2;
+  color: #252033;
+}
+.region-detail {
+  padding: 12px;
+  line-height: 1.7;
+}
+.story-text {
+  white-space: pre-wrap;
+}
+summary {
+  cursor: pointer;
+}
+[role='alert'] {
+  padding: 16px;
+  border: 1px solid #e7a090;
+  border-radius: 12px;
+}
+@media (max-width: 600px) {
+  .world-map {
+    padding: 10px;
+  }
+  .map-heading {
+    display: block;
+    padding: 10px;
+  }
+  nav {
+    flex-wrap: wrap;
+  }
+  .region-selector button {
+    flex: 1 1 40%;
+  }
+  .project-status {
+    display: none;
+  }
+}
+
+.adventure-view {
+  padding: 44px 0;
+  max-width: 850px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+.adventure-view[hidden] {
+  display: none;
+}
+.adventure-panel {
+  border: 1px solid #ffffff26;
+  border-radius: 20px;
+  padding: 26px;
+  margin-top: 28px;
+  background: #1d2839;
+}
+.adventure-panel h2 {
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: 1.3;
+}
+.adventure-panel button:not(.primary-action) {
+  border: 1px solid #79839a;
+  border-radius: 10px;
+  padding: 12px 16px;
+  background: #253043;
+  color: #f2f3f7;
+  margin: 5px 0;
+  text-align: left;
+}
+.adventure-panel button[aria-pressed='true'] {
+  background: #cbb8f2;
+  color: #252033;
+}
+.adventure-landscape {
+  width: 100%;
+  display: block;
+  margin: 24px 0;
+}
+.adventure-reflection {
+  border-top: 1px solid #ffffff26;
+  padding: 16px 0;
+  margin-top: 20px;
+}
+.adventure-reflection button {
+  display: block;
+  width: 100%;
+}
+select {
+  max-width: 100%;
+  padding: 12px;
+  border: 1px solid #73819b;
+  border-radius: 10px;
+  background: #202a3a;
+  color: #f2f3f7;
+  font: inherit;
+}
+select:focus-visible {
+  outline: 3px solid #d5c3fa;
+  outline-offset: 3px;
+}
+@media (max-width: 950px) {
+  .site-header {
+    flex-wrap: wrap;
+  }
+  .site-header nav {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 600px) {
+  .adventure-panel {
+    padding: 16px;
+  }
+}

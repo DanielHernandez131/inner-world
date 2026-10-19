@@ -21,6 +21,15 @@ Las semanas son relativas al inicio efectivo del desarrollo. La base del reposit
 - [x] Primera ejecución remota de Actions completada correctamente.
 - [ ] Configurar protección de `main` y reporte privado de vulnerabilidades.
 
+## Avance de la exploración
+
+Implementados WEB-01 (navegación local, sin rutas URL), API-01, API-02 y AI-02.
+Primera versión de DATA-01, WORLD-01, WEB-02, DATA-02, WORLD-02 e HISTORY-01:
+IndexedDB, revisión de intensidad y retirada de emociones, confirmación atómica y mapa SVG.
+Espejo con origen de fragmentos; falta su validación individual. Falta evaluar AI-01 con un
+proveedor real configurado, pruebas de cuota/migración del repositorio y accesibilidad completa.
+Los criterios de la tabla siguen siendo la referencia para cerrar cada tarea del MVP.
+
 ## Backlog P0
 
 | ID         | Tarea                                   | Criterio de aceptación                                                 |
@@ -41,6 +50,20 @@ Las semanas son relativas al inicio efectivo del desarrollo. La base del reposit
 | DEMO-01    | Demo, fixtures y documentación          | Ejemplos ficticios, estado real y ciclo completo reproducible.         |
 
 Cada tarea puede convertirse en issue sin modificar su ID. No se han creado issues remotos en esta base.
+
+## Aventura híbrida inicial (ampliación de esta fase)
+
+- [x] Endpoint de personalización con contexto reducido y una llamada máxima por solicitud.
+- [x] Primera plantilla narrativa con ramificaciones locales y recursos SVG reutilizados.
+- [x] Persistencia de contenido, recorrido y reflexión por experiencia de origen.
+- [x] Consumo de tokens informado por el proveedor y límite de salida configurable.
+- [x] Pruebas del grafo, recuperación, eliminación y errores sin reparación automática.
+- [ ] Evaluar la calidad narrativa y emocional con OpenAI configurado.
+- [ ] Medir consumo real en un conjunto de pruebas ficticias.
+- [ ] Presupuesto de tokens/gasto persistente y acceso por invitación antes de un servicio compartido.
+
+Esta ampliación no implementa Dungeon ni Alchemist. El cierre inicial es una reflexión local:
+no se generan nuevos análisis emocionales a partir de decisiones ficticias.
 
 ## P1
 

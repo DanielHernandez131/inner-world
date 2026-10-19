@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Inner World API",
-    "description": "Base de desarrollo. La integración con IA todavía no está implementada.",
+    "description": "Exploración emocional local con interpretación IA revisable.",
     "version": "0.1.0"
   },
   "paths": {
@@ -51,10 +51,315 @@
           }
         }
       }
+    },
+    "/api/v1/explorations/analyze": {
+      "post": {
+        "tags": [
+          "exploration"
+        ],
+        "summary": "Explore",
+        "operationId": "explore_api_v1_explorations_analyze_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExplorationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExplorationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adventures/personalize": {
+      "post": {
+        "tags": [
+          "adventure"
+        ],
+        "summary": "Adventure",
+        "operationId": "adventure_api_v1_adventures_personalize_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdventureRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdventureResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AdventurePersonalization": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "introduction": {
+            "type": "string",
+            "maxLength": 600,
+            "minLength": 1,
+            "title": "Introduction"
+          },
+          "clearing_detail": {
+            "type": "string",
+            "maxLength": 220,
+            "minLength": 1,
+            "title": "Clearing Detail"
+          },
+          "shelter_detail": {
+            "type": "string",
+            "maxLength": 220,
+            "minLength": 1,
+            "title": "Shelter Detail"
+          },
+          "arrival_detail": {
+            "type": "string",
+            "maxLength": 220,
+            "minLength": 1,
+            "title": "Arrival Detail"
+          },
+          "reflection_question": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Reflection Question"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title",
+          "introduction",
+          "clearing_detail",
+          "shelter_detail",
+          "arrival_detail",
+          "reflection_question"
+        ],
+        "title": "AdventurePersonalization"
+      },
+      "AdventureRequest": {
+        "properties": {
+          "experience_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Experience Id"
+          },
+          "template_id": {
+            "type": "string",
+            "const": "crossing-v1",
+            "title": "Template Id"
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Summary"
+          },
+          "emotions": {
+            "items": {
+              "$ref": "#/components/schemas/Emotion"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Emotions"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "experience_id",
+          "template_id",
+          "summary",
+          "emotions"
+        ],
+        "title": "AdventureRequest"
+      },
+      "AdventureResponse": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id"
+          },
+          "experience_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Experience Id"
+          },
+          "template_id": {
+            "type": "string",
+            "const": "crossing-v1",
+            "title": "Template Id"
+          },
+          "personalization": {
+            "$ref": "#/components/schemas/AdventurePersonalization"
+          },
+          "usage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TokenUsage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id",
+          "experience_id",
+          "template_id",
+          "personalization",
+          "usage"
+        ],
+        "title": "AdventureResponse"
+      },
+      "CharacterVoice": {
+        "properties": {
+          "emotion": {
+            "$ref": "#/components/schemas/Emotion"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "emotion",
+          "text"
+        ],
+        "title": "CharacterVoice"
+      },
+      "ClarificationQuestion": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Text"
+          },
+          "options": {
+            "items": {
+              "type": "string",
+              "maxLength": 500,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 5,
+            "minItems": 2,
+            "title": "Options"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "text",
+          "options"
+        ],
+        "title": "ClarificationQuestion"
+      },
+      "ClarificationResult": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "clarification",
+            "title": "Status"
+          },
+          "question": {
+            "$ref": "#/components/schemas/ClarificationQuestion"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "question"
+        ],
+        "title": "ClarificationResult"
+      },
+      "CompleteResult": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "complete",
+            "title": "Status"
+          },
+          "analysis": {
+            "$ref": "#/components/schemas/EmotionalAnalysis"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "analysis"
+        ],
+        "title": "CompleteResult"
+      },
       "Emotion": {
         "type": "string",
         "enum": [
@@ -86,6 +391,263 @@
         ],
         "title": "EmotionCatalogEntry"
       },
+      "EmotionReading": {
+        "properties": {
+          "emotion": {
+            "$ref": "#/components/schemas/Emotion"
+          },
+          "intensity": {
+            "type": "integer",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Intensity"
+          },
+          "explanation": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Explanation"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "title": "Evidence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "emotion",
+          "intensity",
+          "explanation",
+          "evidence"
+        ],
+        "title": "EmotionReading"
+      },
+      "EmotionalAnalysis": {
+        "properties": {
+          "schema_version": {
+            "type": "integer",
+            "const": 1,
+            "title": "Schema Version"
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Summary"
+          },
+          "emotions": {
+            "items": {
+              "$ref": "#/components/schemas/EmotionReading"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Emotions"
+          },
+          "characters": {
+            "items": {
+              "$ref": "#/components/schemas/CharacterVoice"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Characters"
+          },
+          "fragments": {
+            "items": {
+              "$ref": "#/components/schemas/FragmentCandidate"
+            },
+            "type": "array",
+            "maxItems": 4,
+            "title": "Fragments"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "schema_version",
+          "summary",
+          "emotions",
+          "characters",
+          "fragments"
+        ],
+        "title": "EmotionalAnalysis"
+      },
+      "Evidence": {
+        "properties": {
+          "source_message_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Source Message Id"
+          },
+          "quote": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Quote"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source_message_id",
+          "quote"
+        ],
+        "title": "Evidence"
+      },
+      "ExplorationAnswer": {
+        "properties": {
+          "question": {
+            "$ref": "#/components/schemas/ClarificationQuestion"
+          },
+          "message": {
+            "$ref": "#/components/schemas/SourceMessage"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "question",
+          "message"
+        ],
+        "title": "ExplorationAnswer"
+      },
+      "ExplorationRequest": {
+        "properties": {
+          "experience_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Experience Id"
+          },
+          "story": {
+            "$ref": "#/components/schemas/SourceMessage"
+          },
+          "answers": {
+            "items": {
+              "$ref": "#/components/schemas/ExplorationAnswer"
+            },
+            "type": "array",
+            "maxItems": 2,
+            "title": "Answers"
+          },
+          "finish_now": {
+            "type": "boolean",
+            "title": "Finish Now",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "experience_id",
+          "story",
+          "answers"
+        ],
+        "title": "ExplorationRequest"
+      },
+      "ExplorationResponse": {
+        "properties": {
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClarificationResult"
+              },
+              {
+                "$ref": "#/components/schemas/CompleteResult"
+              },
+              {
+                "$ref": "#/components/schemas/InsufficientResult"
+              }
+            ],
+            "title": "Result"
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "result",
+          "request_id"
+        ],
+        "title": "ExplorationResponse"
+      },
+      "FragmentCandidate": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "thought",
+              "discovery",
+              "possibility"
+            ],
+            "title": "Kind"
+          },
+          "provenance": {
+            "type": "string",
+            "enum": [
+              "user_quote",
+              "user_paraphrase",
+              "ai_hypothesis"
+            ],
+            "title": "Provenance"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Text"
+          },
+          "source_message_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "maxItems": 5,
+            "minItems": 1,
+            "title": "Source Message Ids"
+          },
+          "related_emotions": {
+            "items": {
+              "$ref": "#/components/schemas/Emotion"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Related Emotions"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "provenance",
+          "text",
+          "source_message_ids",
+          "related_emotions"
+        ],
+        "title": "FragmentCandidate"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
       "HealthResponse": {
         "properties": {
           "status": {
@@ -107,6 +669,111 @@
         },
         "type": "object",
         "title": "HealthResponse"
+      },
+      "InsufficientResult": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "insufficient_context",
+            "title": "Status"
+          },
+          "explanation": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Explanation"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "explanation"
+        ],
+        "title": "InsufficientResult"
+      },
+      "SourceMessage": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "text"
+        ],
+        "title": "SourceMessage"
+      },
+      "TokenUsage": {
+        "properties": {
+          "input_tokens": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Input Tokens"
+          },
+          "output_tokens": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Output Tokens"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "input_tokens",
+          "output_tokens"
+        ],
+        "title": "TokenUsage"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
       }
     }
   }

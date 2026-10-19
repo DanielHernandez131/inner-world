@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -13,3 +14,14 @@ class Settings(BaseSettings):
     )
 
     cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
+
+    openai_api_key: SecretStr = SecretStr("")
+    openai_model: str = ""
+    ai_requests_per_minute: int = Field(default=12, ge=1, le=100)
+    ai_requests_per_day: int = Field(default=200, ge=1, le=10000)
+
+    adventure_max_output_tokens: int = Field(default=1200, ge=500, le=2000)
+
+    @property
+    def ai_enabled(self) -> bool:
+        return bool(self.openai_api_key.get_secret_value() and self.openai_model.strip())

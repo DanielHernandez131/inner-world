@@ -11,3 +11,9 @@ apps/web/src/shared/contracts/generated.ts
 docs/product/definicion-mvp.md
 docs/presentation
 LICENSE
+
+contracts/exploration-*.schema.json
+apps/web/src/shared/contracts/exploration-*.ts
+
+contracts/adventure-*.schema.json
+apps/web/src/shared/contracts/adventure-*.ts

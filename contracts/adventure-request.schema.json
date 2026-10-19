@@ -1,0 +1,54 @@
+{
+  "$defs": {
+    "Emotion": {
+      "enum": [
+        "joy",
+        "trust",
+        "fear",
+        "surprise",
+        "sadness",
+        "disgust",
+        "anger",
+        "anticipation"
+      ],
+      "title": "Emotion",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "experience_id": {
+      "format": "uuid",
+      "title": "Experience Id",
+      "type": "string"
+    },
+    "template_id": {
+      "const": "crossing-v1",
+      "title": "Template Id",
+      "type": "string"
+    },
+    "summary": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    },
+    "emotions": {
+      "items": {
+        "$ref": "#/$defs/Emotion"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Emotions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "experience_id",
+    "template_id",
+    "summary",
+    "emotions"
+  ],
+  "title": "AdventureRequest",
+  "type": "object"
+}
